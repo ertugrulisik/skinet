@@ -7,14 +7,15 @@ namespace Core.Specifications
 {
     public class ProductsWithBrandsAndTypesSpec : BaseSpecification<Product>
     {
-        public ProductsWithBrandsAndTypesSpec(string sort, int? brandId, int? typeId)
+        public ProductsWithBrandsAndTypesSpec(ProductSpecParams productParams)
             : base(x =>
-                 (!brandId.HasValue || x.ProductBrandId == brandId) &&
-                 (!typeId.HasValue || x.ProductTypeId == typeId)
+                 (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) &&
+                 (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId)
             )
         {
             AddIncludes();
-            AddSort(sort);
+            AddSort(productParams.Sort);
+            ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1), productParams.PageSize);
         }
 
         public ProductsWithBrandsAndTypesSpec(int id) :
